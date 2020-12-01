@@ -38,3 +38,21 @@ nav #logo {
 .card button {
     background-color: #FF9800;
 }
+
+#edit-form form {
+    background-color: #ECF0F1;
+}
+
+#edit-form h3 {
+    padding: 3em 0;
+}
+
+#preview {
+    width: 136px;
+    height: 136px;
+    background-color: #000;
+}
+
+input#product-name::placeholder {
+    /*text-align: center;*/
+}
