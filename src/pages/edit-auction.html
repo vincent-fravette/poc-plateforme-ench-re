@@ -16,6 +16,7 @@
         rel="stylesheet">
     <!-- MON CSS -->
     <link rel="stylesheet" href="/src/public/css/styles.css">
+    <link rel="stylesheet" href="/src/public/css/media-queries.css">
 
     <title>Plateforme d'enchères - Modifier une enchère</title>
 </head>
@@ -49,58 +50,57 @@
     <section id="edit-form" class="pb-5">
         <div class="container">
             <h1 class="text-center text-uppercase py-5">modifier une enchère</h1>
-            <form class="p-5">
+            <form class="py-5">
                 <div class="d-flex flex-column align-items-center">
-                    <div class="w-75 text-capitalize">
-                        <!-- INTITULE -->
-                        <label for="product-name">intitulé du produit</label>
-                        <input type="text" class="form-control mb-3" id="product-name" name="description" maxlength="24"
-                            placeholder="24 caractères maximum" required>
-                        <div class="d-flex justify-content-between">
-                            <div id="preview" class="d-flex"></div>
-                            <div id="bloc" class="w-75 d-flex flex-column">
-                                <!-- PRIX -->
-                                <label for="price">prix de lancement (&euro;)</label>
-                                <input type="number" class="form-control mb-3" aria-label="Price" placeholder="En euros"
-                                    name="price" id="price" min="0.01" value="1.00" step="0.01" required>
-                                <!-- IMAGE -->
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile">
-                                    <label class="custom-file-label" for="customFile">uploader une image</label>
-                                </div>
-                            </div>
+                    <div class="w-75 text-capitalize d-flex justify-content-between">
+                        <!-- IMAGE -->
+                        <div id="preview" class="custom-file">
+                            <input type="file" class="custom-file-input h-100" id="customFile">
+                            <label class="custom-file-label h-100" for="customFile">Choose file</label>
+                        </div>
+                        <div class="w-75">
+                            <!-- INTITULE -->
+                            <label for="product-name" class="m-0">intitulé du produit</label>
+                            <input type="text" class="form-control mb-3" id="product-name" name="description"
+                                maxlength="24" placeholder="24 caractères maximum" required>
+                            <!-- PRIX -->
+                            <label for="price" class="m-0">prix de lancement (&euro;)</label>
+                            <input type="number" class="form-control" aria-label="Price" placeholder="En euros"
+                                name="price" id="price" min="0.01" value="1.00" step="0.01" required>
                         </div>
                     </div>
 
                     <h3 class="text-uppercase text-center mb-0">paramétres de l'enchère</h3>
+
                     <div class="d-flex w-75">
-                        <div>
+                        <div class="w-50 pr-2">
                             <!-- DUREE -->
-                            <label for="duration-auction">durée (h):</label>
+                            <label for="duration-auction" class="m-0">durée (h):</label>
                             <input type="number" class="form-control" aria-label="duration-auction"
                                 placeholder="En heures" id="duration-auction" name="duration-auction" min="1" value="48"
                                 required>
                             <!-- PRIX DU CLIC -->
-                            <label for="price-clic">prix du clic (cts):</label>
+                            <label for="price-clic" class="m-0">prix du clic (cts):</label>
                             <input type="number" class="form-control" placeholder="En centimes" aria-label="price-clic"
                                 name="price-clic" id="price-clic" value="0.50" max="0.99" min="0.01" step="0.01"
                                 required>
                         </div>
-                        <div>
-                            <!-- AUGMENTATION DU PRIX -->
-                            <label for="price-increase">augmentation du prix (cts):</label>
-                            <input type="number" class="form-control" aria-label="price-increase"
-                                placeholder="En centimes" name="price-increase" value="0.01" id="augmentation_prix"
-                                max="0.99" min="0.01" step="0.01" required>
+                        <div class="w-50 pl-2">
                             <!-- AUGMENTATION DE LA DUREE -->
-                            <label for="duration-increase">augmentation durée (s):</label>
+                            <label for="duration-increase" class="m-0">augmentation durée (s):</label>
                             <input type="number" class="form-control" aria-label="duration-increase"
                                 placeholder="En secondes" name="duration-increase" value="30" id="duration-increase"
                                 min="0" required>
+                            <!-- AUGMENTATION DU PRIX -->
+                            <label for="price-increase" class="m-0">augmentation du prix (cts):</label>
+                            <input type="number" class="form-control" aria-label="price-increase"
+                                placeholder="En centimes" name="price-increase" value="0.01" id="augmentation_prix"
+                                max="0.99" min="0.01" step="0.01" required>
                         </div>
                     </div>
                     <!-- BOUTON -->
-                    <button type="submit" name="submit" class="btn btn-warning">ajouter l'enchère</button>
+                    <button type="submit" name="submit"
+                        class="btn btn-warning mt-5 text-uppercase font-weight-bold">ajouter l'enchère</button>
                 </div>
             </form>
         </div>

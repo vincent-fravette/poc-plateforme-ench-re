@@ -39,6 +39,10 @@ nav #logo {
     background-color: #FF9800;
 }
 
+#create-form h3 {
+    padding: 3em 0;
+}
+
 #edit-form form {
     background-color: #ECF0F1;
 }
@@ -48,8 +52,16 @@ nav #logo {
 }
 
 #preview {
-    width: 136px;
-    height: 136px;
+    width: 153px;
+    height: 153px;
+    /*background-color: #000;*/
+}
+
+#preview input {
+    background-color: #000;
+}
+
+#preview label{
     background-color: #000;
 }
 
