@@ -1,3 +1,20 @@
+<?php
+    include_once('data-processing.php');
+    if (isset($_GET['edit'])) {
+        $id = $_GET['edit'];
+        $products = json_decode(file_get_contents('public/json/data.json'), true);
+        foreach ($products as $key => $article) {
+            if ($article['id'] == $id) {
+                $title = $article['title'];
+                $price = $article['price'];
+                $price_increase = $article['price-increase'];
+                $duration_auction = $article['duration-auction'];
+                $duration_increase = $article['duration-increase'];
+                $price_clic = $article['price-clic'];
+            }
+        }
+    }
+?>
 <!doctype html>
 <html lang="fr">
 
@@ -15,10 +32,11 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <!-- MON CSS -->
-    <link rel="stylesheet" href="/src/public/css/styles.css">
-    <link rel="stylesheet" href="/src/public/css/media-queries.css">
+    <link rel="stylesheet" href="public/css/styles.css">
+    <link rel="stylesheet" href="public/css/media-queries.css">
 
-    <title>Plateforme d'enchères - Ajouter une enchère</title>
+
+    <title>Modifier une enchère - Plateforme d'enchères</title>
 </head>
 
 <body>
@@ -26,7 +44,7 @@
     <header>
         <!---- NAVIGATION ---->
         <nav class="navbar navbar-expand-lg navbar-dark px-md-5">
-            <a id="logo" class="navbar-brand text-white text-uppercase" href="/src/index.html">ventes aux enchères</a>
+            <a id="logo" class="navbar-brand text-white text-uppercase" href="index.php">ventes aux enchères</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,39 +52,44 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="nav text-uppercase justify-content-center">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/src/index.html">enchéres</a>
+                        <a class="nav-link active" href="index.php">enchéres</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/src/pages/create-auction.html">ajouter un enchère</a>
+                        <a class="nav-link" href="create-auction.php">ajouter une enchère</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/src/pages/edit-auction.html">modifier une enchére</a>
+                        <a class="nav-link" href="list-auction.php">liste des enchères</a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
     <!---------- FORMULAIRE ---------->
-    <section id="create-form">
+    <section id="edit-form" class="pb-5">
         <div class="container">
-            <h1 class="text-center text-uppercase py-5">ajouter une enchère</h1>
-            <form class="py-5">
+            <h1 class="text-center text-uppercase py-5">modifier une enchère</h1>
+            <?php if (!empty($msg)): ?>
+                <div class="text-center alert <?php echo $msg_class ?>" role="alert">
+                    <?php echo $msg; ?>
+                </div>
+            <?php endif; ?>
+            <form class="py-5" method="POST" enctype="multipart/form-data">
                 <div class="d-flex flex-column align-items-center">
                     <div class="w-75 text-capitalize d-flex justify-content-between">
                         <!-- IMAGE -->
                         <div id="preview" class="custom-file">
-                            <input type="file" class="custom-file-input h-100" id="customFile">
+                            <input type="file" class="custom-file-input h-100" id="customFile" name="picture">
                             <label class="custom-file-label h-100" for="customFile">Choose file</label>
                         </div>
                         <div class="w-75">
                             <!-- INTITULE -->
-                            <label for="product-name" class="m-0">intitulé du produit</label>
-                            <input type="text" class="form-control mb-3" id="product-name" name="description"
-                                maxlength="24" placeholder="24 caractères maximum" required>
+                            <label for="title" class="m-0">intitulé du produit</label>
+                            <input type="text" class="form-control mb-3" id="title" name="title"
+                                maxlength="24" placeholder="24 caractères maximum" required value="<?php echo $title ?>">
                             <!-- PRIX -->
                             <label for="price" class="m-0">prix de lancement (&euro;)</label>
                             <input type="number" class="form-control" aria-label="Price" placeholder="En euros"
-                                name="price" id="price" min="0.01" value="1.00" step="0.01" required>
+                                name="price" id="price" min="0.01" step="0.01" required value="<?php echo $price ?>">
                         </div>
                     </div>
 
@@ -77,36 +100,30 @@
                             <!-- DUREE -->
                             <label for="duration-auction" class="m-0">durée (h):</label>
                             <input type="number" class="form-control" aria-label="duration-auction"
-                                placeholder="En heures" id="duration-auction" name="duration-auction" min="1" value="48"
-                                required>
+                                placeholder="En heures" id="duration-auction" name="duration-auction" min="1" required value="<?php echo $duration_auction ?>">
                             <!-- PRIX DU CLIC -->
                             <label for="price-clic" class="m-0">prix du clic (cts):</label>
                             <input type="number" class="form-control" placeholder="En centimes" aria-label="price-clic"
-                                name="price-clic" id="price-clic" value="0.50" max="0.99" min="0.01" step="0.01"
-                                required>
+                                name="price-clic" id="price-clic" max="0.99" min="0.01" step="0.01" required value="<?php echo $price_clic ?>">
                         </div>
                         <div class="w-50 pl-2">
                             <!-- AUGMENTATION DE LA DUREE -->
                             <label for="duration-increase" class="m-0">augmentation durée (s):</label>
                             <input type="number" class="form-control" aria-label="duration-increase"
-                                placeholder="En secondes" name="duration-increase" value="30" id="duration-increase"
-                                min="0" required>
+                                placeholder="En secondes" name="duration-increase" id="duration-increase" min="0" required value="<?php echo $duration_increase ?>">
                             <!-- AUGMENTATION DU PRIX -->
                             <label for="price-increase" class="m-0">augmentation du prix (cts):</label>
                             <input type="number" class="form-control" aria-label="price-increase"
-                                placeholder="En centimes" name="price-increase" value="0.01" id="augmentation_prix"
-                                max="0.99" min="0.01" step="0.01" required>
+                                placeholder="En centimes" name="price-increase" id="augmentation_prix" max="0.99" min="0.01" step="0.01" required value="<?php echo $price_increase ?>">
                         </div>
                     </div>
                     <!-- BOUTON -->
-                    <button type="submit" name="submit"
-                        class="btn btn-warning mt-5 text-uppercase font-weight-bold">ajouter l'enchère</button>
+                    <button type="submit" name="update"
+                        class="btn btn-warning mt-5 text-uppercase font-weight-bold">modifier l'enchère</button>
                 </div>
             </form>
         </div>
     </section>
-
-
     <!-- Option 2: jQuery, Popper.js, and Bootstrap JS-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

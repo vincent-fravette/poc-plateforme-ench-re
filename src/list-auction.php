@@ -1,3 +1,7 @@
+<?php
+    $product = json_decode(file_get_contents('public/json/data.json'), true);
+    //var_dump($product, json_last_error_msg());
+?>
 <!doctype html>
 <html lang="fr">
 
@@ -15,19 +19,19 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <!-- MON CSS -->
-    <link rel="stylesheet" href="/src/public/css/styles.css">
-    <link rel="stylesheet" href="/src/public/css/media-queries.css">
+    <link rel="stylesheet" href="public/css/styles.css">
+    <link rel="stylesheet" href="public/css/media-queries.css">
 
-    <title>Plateforme d'enchères - Liste des enchères</title>
+
+    <title>Liste des enchères - Plateforme d'enchères</title>
 </head>
 
 <body>
-
     <!---------- HEADER ---------->
     <header>
         <!---- NAVIGATION ---->
         <nav class="navbar navbar-expand-lg navbar-dark px-md-5">
-            <a id="logo" class="navbar-brand text-white text-uppercase" href="/src/index.html">ventes aux enchères</a>
+            <a id="logo" class="navbar-brand text-white text-uppercase" href="index.php">ventes aux enchères</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -35,13 +39,13 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="nav text-uppercase justify-content-center">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/src/index.html">enchéres</a>
+                        <a class="nav-link active" href="index.php">enchéres</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/src/pages/create-auction.html">ajouter un enchère</a>
+                        <a class="nav-link" href="create-auction.php">ajouter une enchère</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/src/pages/edit-auction.html">modifier une enchére</a>
+                        <a class="nav-link" href="list-auction.php">liste des enchères</a>
                     </li>
                 </ul>
             </div>
@@ -49,61 +53,45 @@
     </header>
     <section id="list-auction">
         <div class="container-fluid">
-            <h1>liste des enchères</h1>
+        <h1 class="text-center text-uppercase py-5">liste des enchères</h1>
+            
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">image</th>
                         <th scope="col">intitulé</th>
                         <th scope="col">prix</th>
                         <th scope="col">durée de l'enchére</th>
-                        <th scope="col">augmentation de la durée de l'enchère</th>
+                        <th scope="col">augmentation de la durée<br/>de l'enchère</th>
                         <th scope="col">augmentation du prix</th>
                         <th scope="col">prix du clic</th>
                         <th scope="col">gain total</th>
+                        <th scope="col" colspan="3" class="text-center">actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                <?php $i = 1; ?>
+                    <?php foreach ($product as $key => $article): ?>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th scope="row"><?php echo $i ?></th>
+                        <td><?php echo $article['title']; ?></td>
+                        <td><?php echo $article['price']; ?> &euro;</td>
+                        <td><?php echo $article['duration-auction']; ?> heures</td>
+                        <td><?php echo $article['duration-increase']; ?> secondes</td>
+                        <td><?php echo $article['price-increase']; ?> &euro;</td>
+                        <td><?php echo $article['price-clic']; ?> &euro;</td>
+                        <td><?php echo $article['gain']; ?> &euro;</td>
+                        <td><a href="edit-auction.php?edit=<?= $article['id']; ?>" class="edit-btn text-dark" >modifier</a></td>
+                        <td>activer</td>
+                        <td>désactiver</td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
+                    <?php $i++; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
+            
         </div>
     </section>
-
-
     <!-- Option 2: jQuery, Popper.js, and Bootstrap JS-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

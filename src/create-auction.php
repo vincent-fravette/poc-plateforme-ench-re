@@ -1,3 +1,7 @@
+<?php
+    include_once('data-processing.php');
+?>
+
 <!doctype html>
 <html lang="fr">
 
@@ -15,10 +19,11 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <!-- MON CSS -->
-    <link rel="stylesheet" href="/src/public/css/styles.css">
-    <link rel="stylesheet" href="/src/public/css/media-queries.css">
+    <link rel="stylesheet" href="public/css/styles.css">
+    <link rel="stylesheet" href="public/css/media-queries.css">
 
-    <title>Plateforme d'enchères - Modifier une enchère</title>
+
+    <title>Ajouter une enchère - Plateforme d'enchères</title>
 </head>
 
 <body>
@@ -26,7 +31,7 @@
     <header>
         <!---- NAVIGATION ---->
         <nav class="navbar navbar-expand-lg navbar-dark px-md-5">
-            <a id="logo" class="navbar-brand text-white text-uppercase" href="/src/index.html">ventes aux enchères</a>
+            <a id="logo" class="navbar-brand text-white text-uppercase" href="index.php">ventes aux enchères</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,34 +39,39 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="nav text-uppercase justify-content-center">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/src/index.html">enchéres</a>
+                        <a class="nav-link active" href="index.php">enchéres</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/src/pages/create-auction.html">ajouter un enchère</a>
+                        <a class="nav-link" href="create-auction.php">ajouter une enchère</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/src/pages/edit-auction.html">modifier une enchére</a>
+                        <a class="nav-link" href="list-auction.php">liste des enchères</a>
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
     <!---------- FORMULAIRE ---------->
-    <section id="edit-form" class="pb-5">
+    <section id="create-form">
         <div class="container">
-            <h1 class="text-center text-uppercase py-5">modifier une enchère</h1>
-            <form class="py-5">
+            <h1 class="text-center text-uppercase py-5">ajouter une enchère</h1>
+            <?php if (!empty($msg)): ?>
+                <div class="text-center alert <?php echo $msg_class ?>" role="alert">
+                    <?php echo $msg; ?>
+                </div>
+            <?php endif; ?>
+            <form class="py-5" method="POST" enctype="multipart/form-data">
                 <div class="d-flex flex-column align-items-center">
                     <div class="w-75 text-capitalize d-flex justify-content-between">
                         <!-- IMAGE -->
                         <div id="preview" class="custom-file">
-                            <input type="file" class="custom-file-input h-100" id="customFile">
-                            <label class="custom-file-label h-100" for="customFile">Choose file</label>
+                            <input type="file" class="custom-file-input h-100" name="picture" id="picture">
+                            <label class="custom-file-label h-100" for="picture">Choose file</label>
                         </div>
                         <div class="w-75">
                             <!-- INTITULE -->
-                            <label for="product-name" class="m-0">intitulé du produit</label>
-                            <input type="text" class="form-control mb-3" id="product-name" name="description"
+                            <label for="title" class="m-0">intitulé du produit</label>
+                            <input type="text" class="form-control mb-3" id="title" name="title"
                                 maxlength="24" placeholder="24 caractères maximum" required>
                             <!-- PRIX -->
                             <label for="price" class="m-0">prix de lancement (&euro;)</label>
@@ -99,14 +109,13 @@
                         </div>
                     </div>
                     <!-- BOUTON -->
-                    <button type="submit" name="submit"
+                    <button type="submit" name="create"
                         class="btn btn-warning mt-5 text-uppercase font-weight-bold">ajouter l'enchère</button>
                 </div>
             </form>
+            
         </div>
     </section>
-
-
     <!-- Option 2: jQuery, Popper.js, and Bootstrap JS-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -117,6 +126,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
         integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
         crossorigin="anonymous"></script>
+    <!--<script src="script.js"></script>-->
 
 </body>
 
