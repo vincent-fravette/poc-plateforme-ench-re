@@ -44,7 +44,8 @@
                     'duration-increase' => $duration_increase,
                     'price-increase' => $price_increase,
                     'price-clic' => $price_clic,
-                    'gain' => 0
+                    'gain' => 0,
+                    'timer' => array(hours => 'h', minutes => 'm', seconds => 's')
                 );
                 $json_to_php = json_decode(file_get_contents('public/json/data.json'), true);
                 array_unshift($json_to_php, $products);

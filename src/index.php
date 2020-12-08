@@ -1,6 +1,31 @@
 <?php
+    
     $products = json_decode(file_get_contents('public/json/data.json'), true);
     //var_dump($product, json_last_error_msg());
+    $msg_article = "";
+    $no_article = true;
+    foreach ($products as $key => $article) {
+        if ($article['state'] == true) {
+            $no_article = false;
+        }
+    }
+    if ($no_article == true ) {
+        $msg_article = 'Aucun articles à afficher';
+    }
+
+    if (isset($_POST['increase'])) {
+        $id = $_POST['article-id'];
+        foreach ($products as $key => $article) {
+            if ($article['id'] == $id) {
+                $article['price'] = $article['price'] + $article['price-increase'];
+                $article['gain'] = $article['gain'] + $article['price-clic'];
+                $products[$key]['price'] = $article['price'];
+                $products[$key]['gain'] = $article['gain'];
+            }
+        }
+        file_put_contents('public/json/data.json', json_encode($products));
+    }
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -55,9 +80,11 @@
     <section id="article">
         <div class="px-3 px-lg-5 pb-lg-5">
             <h1 class="text-uppercase font-weight-bold text-center py-4 py-lg-5">enchères</h1>
+            <div class="text-center"><?php echo $msg_article ?></div>
             <div class="card-deck flex-wrap">
                 <!---- ARTICLE ---->
                 <?php foreach ($products as $key => $article): ?>
+                <?php if ($article['state'] == true): ?>
                 <article class="card rounded-0 col-4 p-0">
                     <div id="card-header">
                         <div id="timer"></div>
@@ -69,10 +96,14 @@
                         <p class="card-text"><?= $article['price-clic'] ?></p>
                         <p class="card-text"><?= $article['price-increase'] ?></p>
                         <div class="text-center">
-                            <button type="button" class="btn btn-lg rounded-0 text-uppercase font-weight-bold" name="increase">enchérir</button>
+                        <form method="POST" action="#<?= $article['id']?>">
+                            <input type="hidden" name="article-id" id="article-id" value="<?= $article['id'] ?>">
+                            <button type="submit" class="btn btn-lg rounded-0 text-uppercase font-weight-bold" name="increase">enchérir</button>
+                            </form>
                         </div>
                     </div>
                 </article>
+                <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         </div>

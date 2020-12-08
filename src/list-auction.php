@@ -1,6 +1,41 @@
 <?php
-    $product = json_decode(file_get_contents('public/json/data.json'), true);
-    //var_dump($product, json_last_error_msg());
+    $products = json_decode(file_get_contents('public/json/data.json'), true);
+    //var_dump($products, json_last_error_msg());
+
+    if (isset($_POST['activate'])) {
+        $id = $_POST['article-id'];
+        $state = true;
+        foreach ($products as $key => $article) {
+            if ($article['id'] == $id) {
+                $products[$key]['state'] = $state;
+            }
+        }
+        file_put_contents('public/json/data.json', json_encode($products));
+    }
+    if (isset($_POST['deactivate'])){
+        $id = $_POST['article-id'];
+        $state = false;
+        foreach($products as $key => $article){
+            if ($article['id'] == $id) {
+                $products[$key]['state'] = $state;
+            }
+        }
+        file_put_contents('public/json/data.json', json_encode($products));
+    }
+    if (isset($_POST['activate-all'])) {
+        $state = true;
+        foreach ($products as $key => $article) {
+                $products[$key]['state'] = $state;
+        }
+        file_put_contents('public/json/data.json', json_encode($products));
+    }
+    if (isset($_POST['deactivate-all'])){
+        $state = false;
+        foreach($products as $key => $article){
+                $products[$key]['state'] = $state;
+        }
+        file_put_contents('public/json/data.json', json_encode($products));
+    }
 ?>
 <!doctype html>
 <html lang="fr">
@@ -66,12 +101,19 @@
                         <th scope="col">augmentation du prix</th>
                         <th scope="col">prix du clic</th>
                         <th scope="col">gain total</th>
-                        <th scope="col" colspan="3" class="text-center">actions</th>
+                        <th scope="col" colspan="3" class="text-center">
+                        <span>actions</span>
+                            <form method="POST" enctype="multipart/form-data" action="#<?= $article['id']?> ">
+                                <input type="hidden" name="article-id" id="article-id" value="<?= $article['id'] ?>">
+                                <button type="submit" name="activate-all">tout activer</button>
+                                <button type="submit" name="deactivate-all">tout désactiver</button>
+                            </form>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php $i = 1; ?>
-                    <?php foreach ($product as $key => $article): ?>
+                    <?php foreach ($products as $key => $article): ?>
                     <tr>
                         <th scope="row"><?php echo $i ?></th>
                         <td><?php echo $article['title']; ?></td>
@@ -81,9 +123,12 @@
                         <td><?php echo $article['price-increase']; ?> &euro;</td>
                         <td><?php echo $article['price-clic']; ?> &euro;</td>
                         <td><?php echo $article['gain']; ?> &euro;</td>
-                        <td><a href="edit-auction.php?edit=<?= $article['id']; ?>" class="edit-btn text-dark" >modifier</a></td>
-                        <td>activer</td>
-                        <td>désactiver</td>
+                        <td><button><a href="edit-auction.php?edit=<?= $article['id']; ?>" class="edit-btn text-dark" >modifier</a></button></td>
+                        <form method="POST" enctype="multipart/form-data" action="#<?= $article['id']?> ">
+                            <input type="hidden" name="article-id" id="article-id" value="<?= $article['id'] ?>">
+                            <td><button type="submit" name="activate">activer</button></td>
+                            <td><button type="submit" name="deactivate">désactiver</button></td>
+                        </form>
                     </tr>
                     <?php $i++; ?>
                     <?php endforeach; ?>
