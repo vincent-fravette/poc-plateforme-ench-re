@@ -1,12 +1,21 @@
-function triggerClick(e) {
-    document.querySelector('#profileImage').click();
-  }
-  function displayImage(e) {
-    if (e.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function(e){
-        document.querySelector('.custom-file-label').setAttribute('src', e.target.result);
-      }
-      reader.readAsDataURL(e.files[0]);
+function triggerClick(event) {
+
+  document.querySelector('#profileImage').click();
+
+}
+
+function displayImage(event) {
+
+  if (event.files[0]) {
+
+    var reader = new FileReader();
+    reader.onload = function(e){
+
+      document.querySelector('#profileDisplay').setAttribute('src', event.target.result);
+
     }
+    reader.readAsDataURL(event.files[0]);
+
   }
+  
+}

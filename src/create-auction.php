@@ -66,7 +66,7 @@
                         <!-- IMAGE -->
                         <div id="preview" class="custom-file">
                             <input type="file" class="custom-file-input h-100" name="picture" id="picture">
-                            <label class="custom-file-label h-100" for="picture">Choose file</label>
+                            <label class="custom-file-label h-100" for="picture" id="browse">Choose file</label>
                         </div>
                         <div class="w-75">
                             <!-- INTITULE -->
@@ -126,7 +126,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
         integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
         crossorigin="anonymous"></script>
-    <!--<script src="script.js"></script>-->
+    <script src="script.js"></script>
 
 </body>
 

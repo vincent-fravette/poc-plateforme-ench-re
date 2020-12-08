@@ -18,8 +18,10 @@
         foreach ($products as $key => $article) {
             if ($article['id'] == $id) {
                 $article['price'] = $article['price'] + $article['price-increase'];
+                $article['end-auction'] = $article['end-auction'] + $article['duration-increase'];
                 $article['gain'] = $article['gain'] + $article['price-clic'];
                 $products[$key]['price'] = $article['price'];
+                $products[$key]['end-auction'] = $article['end-auction'];
                 $products[$key]['gain'] = $article['gain'];
             }
         }
@@ -81,14 +83,14 @@
         <div class="px-3 px-lg-5 pb-lg-5">
             <h1 class="text-uppercase font-weight-bold text-center py-4 py-lg-5">enchères</h1>
             <div class="text-center"><?php echo $msg_article ?></div>
-            <div class="card-deck flex-wrap">
+            <div class="card-deck">
                 <!---- ARTICLE ---->
                 <?php foreach ($products as $key => $article): ?>
                 <?php if ($article['state'] == true): ?>
                 <article class="card rounded-0 col-4 p-0">
                     <div id="card-header">
-                        <div id="timer"></div>
-                        <img src="<?= $article['picture'] ?>" class="card-img-top rounded-0" alt="Image article">
+                        <div class="timer font-weight-bold text-uppercase" id="<?= $article['id'] ?>"></div>
+                        <img src="<?= $article['picture'] ?>" class="card-img-top rounded-0" alt="Image article" height="300px">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title"><?= $article['title'] ?></h5>
@@ -96,13 +98,32 @@
                         <p class="card-text"><?= $article['price-clic'] ?></p>
                         <p class="card-text"><?= $article['price-increase'] ?></p>
                         <div class="text-center">
-                        <form method="POST" action="#<?= $article['id']?>">
+                        <form method="POST" action="#submit">
                             <input type="hidden" name="article-id" id="article-id" value="<?= $article['id'] ?>">
-                            <button type="submit" class="btn btn-lg rounded-0 text-uppercase font-weight-bold" name="increase">enchérir</button>
+                            <button type="submit" class="btn btn-lg rounded-0 text-uppercase font-weight-bold" name="increase" id="submit">enchérir</button>
                             </form>
                         </div>
                     </div>
                 </article>
+                <script>
+                    var timer = setInterval(function countDown() {
+    
+                        var tempAct = new Date();
+                        var heure = Math.floor(tempAct.getTime() / 1000);
+                        var timeRemaining = <?php echo $article['end-auction']?> - heure;
+                        var hoursRemaining = parseInt(timeRemaining / 3600);
+                        var minutesRemaining = parseInt((timeRemaining % 3600) / 60);
+                        var secondsRemaining = parseInt((timeRemaining % 3600) % 60);
+                    
+                        document.getElementById('<?= $article['id'] ?>').innerHTML = hoursRemaining + ' h : ' + minutesRemaining + ' m : ' + secondsRemaining + ' s ';
+                        if (timeRemaining <= 0) {
+                        document.getElementById('<?= $article['id'] ?>').innerHTML = "EXPIRE";
+                        /*document.getElementById('articleId').setAttribute('disabled', ''); // Bouton disabled quand temps expiré
+                        document.getElementById('articleId').classList.remove('btn-listEnchere');
+                        document.getElementById('articleId').classList.add('btn-listEnchere2');*/
+                        }
+                    }, 1000);
+                </script>
                 <?php endif; ?>
                 <?php endforeach; ?>
             </div>

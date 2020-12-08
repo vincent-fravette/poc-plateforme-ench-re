@@ -3,11 +3,13 @@
     //var_dump($products, json_last_error_msg());
 
     if (isset($_POST['activate'])) {
+        date_default_timezone_set("Indian/Reunion");
         $id = $_POST['article-id'];
         $state = true;
         foreach ($products as $key => $article) {
             if ($article['id'] == $id) {
                 $products[$key]['state'] = $state;
+                $products[$key]['end-auction'] =  mktime(date("H")+ (int)$article['duration-auction'], date("i"), date("s"), date("m"), date("d"), date("Y"));
             }
         }
         file_put_contents('public/json/data.json', json_encode($products));
@@ -24,6 +26,7 @@
     }
     if (isset($_POST['activate-all'])) {
         $state = true;
+        $table_active = "table-active";
         foreach ($products as $key => $article) {
                 $products[$key]['state'] = $state;
         }
@@ -36,6 +39,7 @@
         }
         file_put_contents('public/json/data.json', json_encode($products));
     }
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -126,8 +130,8 @@
                         <td><button><a href="edit-auction.php?edit=<?= $article['id']; ?>" class="edit-btn text-dark" >modifier</a></button></td>
                         <form method="POST" enctype="multipart/form-data" action="#<?= $article['id']?> ">
                             <input type="hidden" name="article-id" id="article-id" value="<?= $article['id'] ?>">
-                            <td><button type="submit" name="activate">activer</button></td>
-                            <td><button type="submit" name="deactivate">désactiver</button></td>
+                            <td><button type="submit" name="activate" class="<?php if ($article['state'] == true) {$class_activate="btn-success";}else{$class_activate="";};echo $class_activate; ?>" <?php if ($article['state'] == true){$classDisabled="disabled";}else{$classDisabled="";};echo $classDisabled; ?>>activer</button></td>
+                            <td><button type="submit" name="deactivate" class="<?php if ($article['state'] == false) {$class_activate="btn-warning";}else{$class_activate="";};echo $class_activate; ?>" <?php if ($article['state'] == false){$classDisabled="disabled";}else{$classDisabled="";};echo $classDisabled; ?>>désactiver</button></td>
                         </form>
                     </tr>
                     <?php $i++; ?>
